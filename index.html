@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4Z API - 2025最新支持GPT-4o、Claude-3.5、Gemini-1.5等的API中转站</title>
+    <style>
+        :root {
+            --primary-color: #4a6bdf;
+            --secondary-color: #34d399;
+            --accent-color: #f59e0b;
+            --text-color: #333;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-radius: 10px;
+            --spacing-unit: 1.5rem;
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-heading: 'Arial', sans-serif;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #e5e7eb;
+                --bg-color: #111827;
+                --card-bg: #1f2937;
+                --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 0 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 2rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+            padding-left: 1rem;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 12px rgba(0,0,0,0.15);
+            background-color: #e67e00;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-unit);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .advantage {
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        tr:hover {
+            background-color: rgba(0,0,0,0.08);
+        }
+
+        .highlight {
+            background-color: rgba(255, 255, 0, 0.2);
+            padding: 0.2rem;
+            border-radius: 3px;
+        }
+
+        .step {
+            margin-bottom: 2rem;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+
+        code {
+            background-color: rgba(0,0,0,0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .rating {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            background-color: rgba(0,0,0,0.05);
+            padding: 1rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .float-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .float-button.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .update-time {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            color: #666;
+        }
+
+        .user-count {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .emoji-bullet {
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .btn {
+                display: block;
+                width: 100%;
+            }
+            table {
+                font-size: 0.9rem;
+            }
+            .container {
+                padding: 1rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>4Z API - 2025最新支持GPT-4o、Claude-3.5、Gemini-1.5等的API中转站</h1>
+        <p class="subtitle">🔥 全面支持 <strong>Claude-3.5-sonnet</strong>、<strong>GPT-4o</strong>、<strong>Llama-3</strong>、<strong>Gemini-1.5</strong> 与 <strong>Mistral</strong> 等热门模型</p>
+
+        <div class="btn-container">
+            <a href="https://zzzzapi.com/register" class="btn btn-primary">🚀 立即注册 - 获取100元免费额度</a>
+        </div>
+
+        <div class="card">
+            <p>在国内使用AI大模型API时，你是否遇到过<strong>网络不稳定</strong>、<strong>响应慢</strong>、<strong>调用失败</strong>的问题？<strong>4Z API</strong>为国内用户提供**稳定可靠**的API中转服务，通过**优化线路**和**智能加速**，让你能够**无缝接入**各大AI服务，享受**极速体验**！</p>
+        </div>
+
+        <h2>🌟 为什么选择4Z API</h2>
+        <div class="card">
+            <p class="advantage"><span class="emoji-bullet">✅</span> <strong>国内直连</strong> - 平均延迟低至<strong>60ms</strong>，比直接访问快<strong>10-15倍</strong></p>
+            <p class="advantage"><span class="emoji-bullet">🔥</span> <strong>成本节省</strong> - 比官方价格<strong>低20-40%</strong>，帮助您控制AI使用成本</p>
+            <p class="advantage"><span class="emoji-bullet">⚡</span> <strong>高并发支持</strong> - 轻松应对<strong>大规模请求</strong>，支持<strong>100+QPS</strong></p>
+            <p class="advantage"><span class="emoji-bullet">💯</span> <strong>接口兼容</strong> - 与官方API<strong>完全兼容</strong>，<strong>零代码修改</strong>即可迁移</p>
+            <p class="advantage"><span class="emoji-bullet">⭐</span> <strong>7×24小时稳定</strong> - 多线路备份，<strong>99.9%</strong>可用性保障</p>
+            <p class="advantage"><span class="emoji-bullet">🚀</span> <strong>简单易用</strong> - 专业技术团队提供<strong>全方位技术支持</strong></p>
+        </div>
+
+        <div class="btn-container">
+            <a href="https://zzzzapi.com/register" class="btn btn-primary">🔐 免费注册 - 立即体验稳定快速的API服务</a>
+        </div>
+
+        <h2>🤖 支持的热门API服务</h2>
+        <div class="card">
+            <h3>OpenAI系列 <span class="rating">★★★★★</span></h3>
+            <ul>
+                <li><strong>GPT-4o</strong> - OpenAI最新旗舰大模型，多模态能力卓越</li>
+                <li><strong>GPT-4o-mini</strong> - 性价比之选，更经济实惠</li>
+                <li><strong>GPT-4 Turbo</strong> - 强大的文本理解和生成能力</li>
+                <li><strong>DALL-E 3</strong> - 前沿图像生成模型</li>
+            </ul>
+
+            <h3>Anthropic系列 <span class="rating">★★★★☆</span></h3>
+            <ul>
+                <li><strong>Claude-3-opus</strong> - Anthropic最强旗舰模型</li>
+                <li><strong>Claude-3.5-sonnet</strong> - 性能与效率的完美平衡</li>
+                <li><strong>Claude-instant</strong> - 响应速度快，成本低</li>
+            </ul>
+
+            <h3>Google系列 <span class="rating">★★★★☆</span></h3>
+            <ul>
+                <li><strong>Gemini-1.5-pro</strong> - Google最新多模态大模型</li>
+                <li><strong>Gemini-1.5-flash</strong> - 快速高效的推理模型</li>
+            </ul>
+
+            <h3>其他热门模型 <span class="rating">★★★★☆</span></h3>
+            <ul>
+                <li><strong>Llama-3-70b</strong> - Meta开源大模型，性能出色</li>
+                <li><strong>Mistral-large</strong> - 轻量级高性能模型</li>
+                <li><strong>Midjourney API</strong> - 顶级图像生成服务</li>
+                <li><strong>Stable Diffusion</strong> - 多样化图像生成模型</li>
+            </ul>
+        </div>
+
+        <h2>📊 全方位对比</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>4Z API</th>
+                        <th>官方API直连</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>国内访问速度</td>
+                        <td>✅ 极速 (60-100ms)</td>
+                        <td>❌ 慢 (800-2000ms)</td>
+                    </tr>
+                    <tr>
+                        <td>稳定性</td>
+                        <td>✅ 99.9%可用性</td>
+                        <td>❌ 经常断连和超时</td>
+                    </tr>
+                    <tr>
+                        <td>价格</td>
+                        <td>✅ 比官方低20-40%</td>
+                        <td>❌ 原价</td>
+                    </tr>
+                    <tr>
+                        <td>并发能力</td>
+                        <td>✅ 支持高并发 (100+ QPS)</td>
+                        <td>❌ 官方限流严格</td>
+                    </tr>
+                    <tr>
+                        <td>接口兼容性</td>
+                        <td>✅ 完全兼容官方</td>
+                        <td>✅ 官方标准</td>
+                    </tr>
+                    <tr>
+                        <td>技术支持</td>
+                        <td>✅ 7×24中文技术支持</td>
+                        <td>❌ 英文支持，响应慢</td>
+                    </tr>
+                    <tr>
+                        <td>计费方式</td>
+                        <td>✅ 灵活 (预付费/后付费)</td>
+                        <td>❌ 仅信用卡预付费</td>
+                    </tr>
+                    <tr>
+                        <td>余额提醒</td>
+                        <td>✅ 余额不足主动提醒</td>
+                        <td>❌ 无主动提醒</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📝 使用教程</h2>
+        <div class="card">
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>注册4Z API账户</strong>
+                <p>访问<a href="https://zzzzapi.com/register">https://zzzzapi.com/register</a>注册账户，并完成实名认证。</p>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>获取API密钥</strong>
+                <p>在个人中心生成API密钥（API Key），请妥善保管，不要泄露给他人。</p>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>充值余额</strong>
+                <p>通过支付宝、微信或银行卡充值账户余额，新用户可获得100元免费额度。</p>
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>修改API接入点</strong>
+                <p>将原有代码中的API接入点URL修改为4Z API提供的地址，其他参数保持不变。</p>
+            </div>
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>开始使用</strong>
+                <p>修改完成后即可开始使用，享受稳定、快速的API调用体验。</p>
+            </div>
+        </div>
+
+        <h2>💻 API调用示例</h2>
+        <div class="card">
+            <h3>Python示例</h3>
+            <pre><code>from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://zzzzapi.com/v1",  # 4Z API的接入点
+    api_key="sk-xxxx"  # 替换成您的API密钥
+)
+
+stream = client.chat.completions.create(
+    model="claude-3.5-sonnet",  # 支持多种模型
+    messages=[{"role": "user", "content": "帮我写一段Python代码来实现二分查找"}],
+    stream=True,
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content is not None:
+        print(chunk.choices[0].delta.content, end="")</code></pre>
+
+            <h3>JavaScript示例</h3>
+            <pre><code>import { OpenAI } from "openai";
+
+const openai = new OpenAI({
+    baseURL: "https://zzzzapi.com/v1",
+    apiKey: "sk-xxxx", // 替换成您的API密钥
+});
+
+async function main() {
+    const stream = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: "写一个React组件实现待办事项列表" }],
+        stream: true,
+    });
+    
+    for await (const chunk of stream) {
+        process.stdout.write(chunk.choices[0]?.delta?.content || "");
+    }
+}
+
+main();</code></pre>
+
+            <h3>Java示例</h3>
+            <pre><code>import com.theokanning.openai.OpenAiApi;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.service.OpenAiService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class OpenAiExample {
+    public static void main(String[] args) {
+        String apiKey = "sk-xxxx"; // 替换成您的API密钥
+        String baseUrl = "https://zzzzapi.com/v1";
+        
+        OpenAiService service = new OpenAiService(apiKey, baseUrl);
+        
+        List<ChatMessage> messages = new ArrayList<>();
+        messages.add(new ChatMessage("user", "用Java实现一个简单的HTTP服务器"));
+        
+        ChatCompletionRequest request = ChatCompletionRequest.builder()
+                .model("mistral-large")
+                .messages(messages)
+                .build();
+        
+        service.createChatCompletion(request).getChoices().forEach(choice -> {
+            System.out.println(choice.getMessage().getContent());
+        });
+    }
+}</code></pre>
+        </div>
+
+        <h2>❓ 常见问题 (FAQ)</h2>
+        <div class="card">
+            <div class="faq-item">
+                <div class="faq-question">📌 4Z API支持哪些AI模型？</div>
+                <div class="faq-answer">
+                    <p>我们支持几乎所有主流的AI大模型，包括但不限于：OpenAI的GPT-4o、GPT-4o-mini、GPT-4 Turbo系列，Anthropic的Claude-3.5-sonnet、Claude-3-opus系列，Google的Gemini-1.5系列，Meta的Llama-3系列，以及Mistral、DALL-E、Midjourney等模型。我们会持续更新支持的模型列表，跟进最新的AI技术发展。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">📌 使用4Z API需要修改现有代码吗？</div>
+                <div class="faq-answer">
+                    <p>几乎不需要修改现有代码。4Z API与官方API保持完全兼容，您只需要将API接入点URL从官方地址替换为我们提供的地址即可。例如，将"https://api.openai.com/v1"替换为"https://zzzzapi.com/v1"，其他参数和调用方式均保持不变。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">📌 4Z API的计费方式是怎样的？</div>
+                <div class="faq-answer">
+                    <p>我们采用按使用量计费的方式，根据不同模型的token消耗计费，价格比官方API低20-40%。系统会实时统计您的用量并从账户余额中扣除。我们支持预付费（充值）和企业客户的后付费（月结）两种方式。新用户注册可获得100元的免费体验额度。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">📌 如何保证数据安全？</div>
+                <div class="faq-answer">
+                    <p>4Z API采用端到端加密技术，所有请求和响应数据均经过SSL/TLS加密传输。我们不会存储您的请求内容和响应数据，仅记录必要的调用统计信息用于计费。您的API密钥经过高强度加密存储，确保安全。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">📌 遇到技术问题如何获取支持？</div>
+                <div class="faq-answer">
+                    <p>我们提供多种技术支持渠道：官网在线客服、电子邮件支持、技术文档中心和社区论坛。企业客户还可以获得专属技术支持经理的一对一服务。大部分技术问题都能在1小时内得到响应和解决方案。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">📌 4Z API的并发能力如何？</div>
+                <div class="faq-answer">
+                    <p>我们的服务架构专为高并发场景设计，基础版账户支持最高50 QPS的并发请求，企业版账户可提供100+ QPS的并发能力，还可根据需求定制更高的并发方案。我们采用多区域部署和智能负载均衡技术，确保服务的稳定性和响应速度。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">📌 是否支持流式响应（Stream）？</div>
+                <div class="faq-answer">
+                    <p>是的，我们完全支持流式响应（Stream）模式，可以实现打字机效果的实时输出，适用于聊天机器人等交互式应用场景。使用方式与官方API完全一致，示例代码可参考我们的开发文档。</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>📈 为什么4Z API如此受欢迎？</h2>
+        <div class="card">
+            <p>根据我们的数据统计，使用4Z API服务的用户已经超过<span class="user-count" id="userCount">15,000+</span>，日调用量达到<strong>1000万+次</strong>，这些数字还在持续增长。</p>
+            
+            <blockquote>
+                "4Z API解决了我们在国内调用AI大模型的最大痛点 - 稳定性和速度问题。接入后，我们的响应速度提升了8倍，系统稳定性大幅提高，用户体验显著改善。" — 某知名AI应用开发负责人
+            </blockquote>
+            
+            <p>我们的服务目前已被<strong>500+</strong>企业客户采用，涵盖<strong>教育、金融、医疗、电商</strong>等多个行业，为各类AI应用提供强大的后端支持。</p>
+        </div>
+        
+        <div class="btn-container">
+            <a href="https://zzzzapi.com/register" class="btn btn-primary">💎 立即开通 - 开启AI加速之旅</a>
+        </div>
+        
+        <p class="update-time">最后更新时间：<span id="updateTime">2023年4月15日</span></p>
+    </div>
+
+    <a href="https://zzzzapi.com/register" class="btn btn-primary float-button" id="floatButton">🚀 立即注册</a>
+
+    <script>
+        // 动态更新时间
+        const updateTimeElement = document.getElementById('updateTime');
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        updateTimeElement.textContent = `${year}年${month}月${day}日`;
+        
+        // 用户数量动态增长
+        const userCountElement = document.getElementById('userCount');
+        let userCount = 15328;
+        
+        setInterval(() => {
+            userCount += Math.floor(Math.random() * 3);
+            userCountElement.textContent = userCount.toLocaleString() + '+';
+        }, 3000);
+        
+        // 滚动时显示浮动按钮
+        const floatButton = document.getElementById('floatButton');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                floatButton.classList.add('visible');
+            } else {
+                floatButton.classList.remove('visible');
+            }
+        });
+        
+        // 注册按钮动画效果
+        const buttons = document.querySelectorAll('.btn-primary');
+        setInterval(() => {
+            buttons.forEach(button => {
+                button.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
